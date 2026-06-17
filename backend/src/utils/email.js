@@ -114,12 +114,35 @@ const templates = {
   }),
 };
 
-const sendEmail = async ({ to, subject, template, data, html }) => {
+// const sendEmail = async ({ to, subject, template, data, html }) => {
+//   let emailHtml = html;
+//   let emailSubject = subject;
+
+//   if (template && templates[template]) {
+//     const rendered = templates[template](data || {});
+//     emailHtml = rendered.html;
+//     emailSubject = rendered.subject || subject;
+//   }
+
+//   const mailOptions = {
+//     from: `"LUXE Fashion" <${process.env.EMAIL_USER}>`,
+//     to,
+//     subject: emailSubject,
+//     html: emailHtml,
+//   };
+
+//   await transporter.sendMail(mailOptions);
+// };
+
+const sendEmail = async ({to, subject, template, data, html}) => {
+  console.log ('EMAIL_USER:', process.env.EMAIL_USER);
+  console.log ('Sending email to:', to);
+
   let emailHtml = html;
   let emailSubject = subject;
 
   if (template && templates[template]) {
-    const rendered = templates[template](data || {});
+    const rendered = templates[template] (data || {});
     emailHtml = rendered.html;
     emailSubject = rendered.subject || subject;
   }
@@ -131,7 +154,13 @@ const sendEmail = async ({ to, subject, template, data, html }) => {
     html: emailHtml,
   };
 
-  await transporter.sendMail(mailOptions);
+  try {
+    const info = await transporter.sendMail (mailOptions);
+    console.log ('Email sent:', info.messageId);
+  } catch (error) {
+    console.error ('EMAIL ERROR:', error);
+    throw error;
+  }
 };
 
 module.exports = sendEmail;
