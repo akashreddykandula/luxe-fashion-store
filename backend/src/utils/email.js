@@ -168,8 +168,6 @@ const templates = {
 // };
 
 const sendEmail = async ({to, subject, template, data, html}) => {
-  console.log ('Sending email to:', to);
-
   let emailHtml = html;
   let emailSubject = subject;
 
@@ -179,20 +177,31 @@ const sendEmail = async ({to, subject, template, data, html}) => {
     emailSubject = rendered.subject || subject;
   }
 
+  // try {
+  //   const response = await resend.emails.send ({
+  //     from: `LUXE Fashion <${process.env.EMAIL_FROM}>`,
+  //     to,
+  //     subject: emailSubject,
+  //     html: emailHtml,
+  //   });
+  //   return response;
+  // } catch (error) {
+  //   throw error;
+  // }
   try {
-    const response = await resend.emails.send ({
-      from: `LUXE Fashion <${process.env.EMAIL_FROM}>`,
-      to,
-      subject: emailSubject,
-      html: emailHtml,
-    });
+  const response = await resend.emails.send({
+    from: `LUXE Fashion <${process.env.EMAIL_FROM}>`,
+    to,
+    subject: emailSubject,
+    html: emailHtml,
+  });
 
-    console.log ('Email sent:', response);
-    return response;
-  } catch (error) {
-    console.error ('EMAIL ERROR:', error);
-    throw error;
-  }
+  console.log(`✅ Email sent | ${response.data?.id}`);
+  return response;
+} catch (error) {
+  console.error('❌ Email failed:', error.message);
+  throw error;
+}
 };
 
 module.exports = sendEmail;
