@@ -114,6 +114,14 @@ app.get ('/api/test', (req, res) => {
   });
 });
 
+try {
+  const authRoutes = require ('./src/routes/auth');
+  app.use ('/api/auth', authRoutes);
+  console.log ('✅ Auth routes loaded');
+} catch (err) {
+  console.error ('❌ Auth routes failed:', err);
+}
+
 // 404 handler
 app.use ((req, res) => {
   res
