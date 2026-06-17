@@ -31,7 +31,7 @@ exports.createOrder = async (req, res) => {
     orderItems.push({
       product: product._id,
       name: product.name,
-      image: product.images[0]?.url || '',
+     image: product.images?.[0]?.url || '',
       price: product.price,
       quantity: item.quantity,
       size: item.size,
@@ -91,6 +91,7 @@ exports.createOrder = async (req, res) => {
   }
 
   // Send order confirmation email
+  const emailTo = req.user?.email || guestEmail;
 
  // Send email in background
 if (emailTo) {
