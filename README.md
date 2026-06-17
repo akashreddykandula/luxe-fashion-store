@@ -17,7 +17,7 @@ A production-ready full-stack clothing brand e-commerce platform built with Reac
 | Auth             | JWT + bcrypt                   |
 | Image Storage    | Cloudinary                     |
 | Payments         | Razorpay                       |
-| Email            | Nodemailer                     |
+| Email            | Resend                         |
 
 ---
 
