@@ -91,19 +91,20 @@ exports.createOrder = async (req, res) => {
   }
 
   // Send order confirmation email
-  try {
-    const emailTo = req.user?.email || guestEmail;
-    if (emailTo) {
-      await sendEmail({
-        to: emailTo,
-        subject: `Order Confirmed — ${order.orderNumber}`,
-        template: 'orderConfirmation',
-        data: { order, name: req.user?.name || guestName },
-      });
-    }
-  } catch (err) {
-    console.error('Order email failed:', err.message);
-  }
+  // try {
+  //   const emailTo = req.user?.email || guestEmail;
+  //   if (emailTo) {
+  //     await sendEmail({
+  //       to: emailTo,
+  //       subject: `Order Confirmed — ${order.orderNumber}`,
+  //       template: 'orderConfirmation',
+  //       data: { order, name: req.user?.name || guestName },
+  //     });
+  //   }
+  // } catch (err) {
+  //   console.error('Order email failed:', err.message);
+  // }
+  console.log('Order created:', order.orderNumber);
 
   res.status(201).json({ success: true, order });
 };
