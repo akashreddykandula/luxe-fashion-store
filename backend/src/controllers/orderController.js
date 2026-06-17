@@ -104,7 +104,7 @@ if (emailTo) {
     console.error('Order email failed:', err.message);
   });
 }
-console.log (`📦 Order status updated: ${order.orderNumber} → ${status}`);
+// console.log (`📦 Order status updated: ${order.orderNumber} → ${status}`);
   res.status (201).json ({
   success: true,
   order,
