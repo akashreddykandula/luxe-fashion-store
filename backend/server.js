@@ -28,6 +28,7 @@ const newsletterRoutes = require ('./src/routes/newsletter');
 const contactRoutes = require ('./src/routes/contact');
 
 const app = express ();
+app.set ('trust proxy', 1);
 
 // Connect to database
 connectDB ();
