@@ -107,6 +107,13 @@ app.use ('/api/admin', adminRoutes);
 app.use ('/api/newsletter', newsletterRoutes);
 app.use ('/api/contact', contactRoutes);
 
+app.get ('/api/test', (req, res) => {
+  res.json ({
+    success: true,
+    authRoutesLoaded: true,
+  });
+});
+
 // 404 handler
 app.use ((req, res) => {
   res
