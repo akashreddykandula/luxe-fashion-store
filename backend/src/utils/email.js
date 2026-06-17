@@ -1,14 +1,18 @@
-const nodemailer = require('nodemailer');
+// const nodemailer = require('nodemailer');
 
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-  port: Number(process.env.EMAIL_PORT) || 587,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+// const transporter = nodemailer.createTransport({
+//   host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+//   port: Number(process.env.EMAIL_PORT) || 587,
+//   secure: false,
+//   auth: {
+//     user: process.env.EMAIL_USER,
+//     pass: process.env.EMAIL_PASS,
+//   },
+// });
+const {Resend} = require ('resend');
+
+const resend = new Resend (process.env.RESEND_API_KEY);
+
 
 const templates = {
   welcome: ({ name }) => ({
@@ -134,8 +138,36 @@ const templates = {
 //   await transporter.sendMail(mailOptions);
 // };
 
+// const sendEmail = async ({to, subject, template, data, html}) => {
+//   console.log ('EMAIL_USER:', process.env.EMAIL_USER);
+//   console.log ('Sending email to:', to);
+
+//   let emailHtml = html;
+//   let emailSubject = subject;
+
+//   if (template && templates[template]) {
+//     const rendered = templates[template] (data || {});
+//     emailHtml = rendered.html;
+//     emailSubject = rendered.subject || subject;
+//   }
+
+//   const mailOptions = {
+//     from: `"LUXE Fashion" <${process.env.EMAIL_USER}>`,
+//     to,
+//     subject: emailSubject,
+//     html: emailHtml,
+//   };
+
+//   try {
+//     const info = await transporter.sendMail (mailOptions);
+//     console.log ('Email sent:', info.messageId);
+//   } catch (error) {
+//     console.error ('EMAIL ERROR:', error);
+//     throw error;
+//   }
+// };
+
 const sendEmail = async ({to, subject, template, data, html}) => {
-  console.log ('EMAIL_USER:', process.env.EMAIL_USER);
   console.log ('Sending email to:', to);
 
   let emailHtml = html;
@@ -147,16 +179,16 @@ const sendEmail = async ({to, subject, template, data, html}) => {
     emailSubject = rendered.subject || subject;
   }
 
-  const mailOptions = {
-    from: `"LUXE Fashion" <${process.env.EMAIL_USER}>`,
-    to,
-    subject: emailSubject,
-    html: emailHtml,
-  };
-
   try {
-    const info = await transporter.sendMail (mailOptions);
-    console.log ('Email sent:', info.messageId);
+    const response = await resend.emails.send ({
+      from: `LUXE Fashion <${process.env.EMAIL_FROM}>`,
+      to,
+      subject: emailSubject,
+      html: emailHtml,
+    });
+
+    console.log ('Email sent:', response);
+    return response;
   } catch (error) {
     console.error ('EMAIL ERROR:', error);
     throw error;
