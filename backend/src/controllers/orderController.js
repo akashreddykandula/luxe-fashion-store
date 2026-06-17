@@ -344,17 +344,19 @@ exports.updateOrderStatus = async (req, res) => {
   await order.save();
 
   // Notify customer
-  if (order.user) {
-    const user = await require('../models/User').findById(order.user).select('email name');
-    if (user) {
-      await sendEmail({
-        to: user.email,
-        subject: `Order Update — ${order.orderNumber}`,
-        template: 'orderStatusUpdate',
-        data: { name: user.name, order },
-      }).catch(console.error);
-    }
-  }
+  // if (order.user) {
+  //   const user = await require('../models/User').findById(order.user).select('email name');
+  //   if (user) {
+  //     await sendEmail({
+  //       to: user.email,
+  //       subject: `Order Update — ${order.orderNumber}`,
+  //       template: 'orderStatusUpdate',
+  //       data: { name: user.name, order },
+  //     }).catch(console.error);
+  //   }
+  // }
+  console.log ('Order created:', order.orderNumber);
+
 
   res.status(200).json({ success: true, order });
 };
